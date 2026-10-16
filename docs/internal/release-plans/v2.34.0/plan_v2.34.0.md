@@ -1,8 +1,8 @@
-# v2.34.0 Release Plan: STUB
+# v2.34.0 Release Plan
 
-**Status:** **STUB, seeded 2026-09-01** during the v2.33.0 G4 post-tag hygiene pass. Nothing is scoped, nothing is ruled. This file exists so the v2.33.0 carries have a home rather than living only in a session log.
+**Status:** **PLANNED, scope ruled 2026-10-15.** Seeded 2026-09-01 as a stub during the v2.33.0 G4 post-tag hygiene pass, so the v2.33.0 carries had a home rather than living only in a session log. The ruled scope is in "Scope, ruled 2026-10-15" below; nothing is built yet.
 **Owner:** Maintainers.
-**Type:** Unknown. Expected MINOR, but the `[fictional]`-convention item below could land as a PATCH on its own if the rest slips.
+**Type:** MINOR. The headline is a new skill, which is the repo's MINOR test in [`../../skill-versioning.md`](../../skill-versioning.md).
 **Previous:** v2.33.0 SHIPPED 2026-09-01 (tag `v2.33.0` at `7a42570e`; plan at [`../v2.33.0/plan_v2.33.0.md`](../v2.33.0/plan_v2.33.0.md)).
 
 ---
@@ -12,6 +12,36 @@
 **The `[fictional]`-convention item is the root cause of four separate G1 recurrences in v2.33.0 and must be sequenced FIRST.** Every sample sweep should follow it, not precede it. Four consecutive adversarial rounds each found an incomplete marking sweep, and the reason is that the rule being enforced is written down nowhere: `README_SAMPLES.md` defines the convention number-scoped ("every invented metric", "any specific number") and `check-sample-no-fabricated-metrics.mjs` is percentage-scoped to match, so the methodology-prose marking rule those four rounds actually enforced has no source. A fifth recurrence is likely until it is authored.
 
 ---
+
+## Scope, ruled 2026-10-15
+
+Ruled in a maintainer decision sitting on 2026-10-15, after a status review found this stub still unscoped six weeks after v2.33.0 shipped.
+
+**The dropped carry.** The v2.33.0 plan staged both AI-family keystones, `measure-ai-eval-spec` and `deliver-ai-behavior-spec`, for this release (see its "Not carried in" section, [`../v2.33.0/plan_v2.33.0.md`](../v2.33.0/plan_v2.33.0.md)). This stub did not carry them when it was seeded, so the carry is restored here and re-ruled.
+
+| Item | Ruling | Why |
+|---|---|---|
+| `measure-ai-eval-spec` (new skill, measure phase) | **In v2.34.0, as the headline** | It is the measurement twin the behavior spec is checked against, and it carries the eval-review capability ([C-3 spec](../v2.32.0/spec_c3-ai-product-family.md) sections 2.3 and 9) |
+| `deliver-ai-behavior-spec` (new skill, deliver phase) | **Moved to v2.35.0** | Every new skill costs at least an L-sized asset floor. One per release ships sooner, and v2.33.0 showed that authored scope churns under adversarial review |
+| Eval-review capability | **Rides inside the eval spec** | Per C-3 spec section 2.3, it is `utility-pm-critic` pointed at the eval spec's `SKILL.md`, with no new rubric and no new sub-agent. The eval spec must therefore cover leakage, contamination, judge calibration, reward hacking, slice coverage, repeated-run variance and threshold validity |
+
+**Gate before any build.** Run the control-arm test from C-3 spec section 7 for both keystones at the start of the cycle. It is cheap, and it settles the v2.35.0 input at the same time. A keystone that does not beat the no-skill control is not built.
+
+**Prerequisite ruling.** D-A (distributional acceptance) is still open in C-3 spec section 10: does distributional acceptance route out of `deliver-acceptance-criteria` and into the eval spec (recommendation B)? The eval spec's scope depends on the answer, so D-A is ruled before the build starts. D-B (instrumentation privacy) and D-D (PRD increments) were in effect settled by what v2.33.0 shipped. D-E (plugin identity) and D-F (governance evidence map) stay deferred.
+
+**Order inside the cycle.**
+
+1. Section A item 1, the `[fictional]` convention, stays first. The eval spec ships three thread samples, and samples follow the convention.
+2. The control-arm tests for both keystones, which can run beside item 1.
+3. The D-A ruling, then the eval-spec build. The build adds the skill's baseline `HISTORY.md` by hand, because the skill-builder does not scaffold one yet (see the last bullet below).
+4. Release gates G0 through G4, then the `agent-plugins` registry re-pin, which is the step that delivers the release to users.
+
+**Also settled 2026-10-15.**
+
+- [#279](https://github.com/product-on-purpose/pm-skills/issues/279) (skills-manifest.yaml, restore or retire) is ruled **retire**, and the retirement merged on 2026-10-15 as [#301](https://github.com/product-on-purpose/pm-skills/pull/301); see section D.
+- Two contributor pull requests feed this cycle. [#287](https://github.com/product-on-purpose/pm-skills/pull/287) (PR-template checklist wording) had its expired CI re-run and approved, and it merged on 2026-10-15 as `05612b1b`. [#286](https://github.com/product-on-purpose/pm-skills/pull/286) would be the first published Model Trace Capture sample, answering good-first-issue [#282](https://github.com/product-on-purpose/pm-skills/issues/282). On 2026-10-15 it conflicted with the 202-sample counts. A review comment posted that day asks for a rebase, a line-ending fix in its test, and `Part of #282` in place of `Fixes #282`, because #282 has two other slots still open. **If the author has not responded by 2026-10-29, maintainers finish the rebase on the contributor's branch**, which allows maintainer edits.
+- Release and dependency hygiene, 2026-10-15. Eleven Dependabot pull requests merged, including the Starlight 0.41.7 to 0.42.0 group bump ([#288](https://github.com/product-on-purpose/pm-skills/pull/288)). The v2.33.0 G4 pass had never reconciled `.release-please-manifest.json`, so shadow Release PR [#271](https://github.com/product-on-purpose/pm-skills/pull/271) kept proposing 2.33.0 after that version shipped. [#302](https://github.com/product-on-purpose/pm-skills/pull/302) reconciled it, release-please then reported no user-facing commits since the tag, and #271 was closed. See section B for the two G4 defects behind it.
+- **Open consequence of the #279 ruling, found 2026-10-15.** `docs/internal/skill-versioning.md` now requires a `HISTORY.md` from a skill's first 1.0.0 release, but two shipped skills still follow the older second-version rule. `utility-pm-skill-builder` does not scaffold a `HISTORY.md`, and `utility-pm-skill-iterate` (Step 7) calls one premature before a skill's second version. Aligning them changes skill behavior and needs a version bump for each, so it was kept out of the docs-only retirement. It is a candidate for this cycle. No skill in this repo is affected today, because all 68 already carry the file.
 
 ## A. Carries from v2.33.0 section D
 
@@ -31,10 +61,12 @@ Carried under [#269](https://github.com/product-on-purpose/pm-skills/issues/269)
 | Defect | Where | Consequence observed |
 |---|---|---|
 | **G2 names two manifests; the repo has three** | `site/src/content/docs/contributing/release-runbook.md` | Following G2 literally misses `.codex-plugin/plugin.json`. `validate-version-consistency` catches it, so it is a friction defect rather than a correctness one |
-| **`release-please-config.json` `extra-files` also lists only two** | `release-please-config.json` | `.claude-plugin/marketplace.json` is absent from the list. Same family as the row above |
+| **`release-please-config.json` `extra-files` also lists only two** | `release-please-config.json` | `.claude-plugin/marketplace.json` is absent from the list. Same family as the row above. **Probably not a defect (noted 2026-10-15):** v2.32.0 WS-6 removed that entry on purpose, because the marketplace release pin is generator-owned through `evalMarketplacePin`; see the WS-6 row of [`../v2.32.0/plan_v2.32.0.md`](../v2.32.0/plan_v2.32.0.md). Confirm before acting on this row |
 | **G2.5 sub-check 7 says to record the captured SHA without saying where** | Runbook G2.5 | Recording it in a tracked file necessarily advances HEAD past the SHA just captured, and re-capturing recurses. **This produced the v2.33.0 tag-target ambiguity directly.** The fix is to state that the captured SHA is the authority and HEAD moving past it is expected, not a problem to resolve |
 | **G4 sub-check 4 says the Release body is not auto-created** | Runbook G4 | `.github/workflows/release.yml` auto-publishes a generic body via `softprops/action-gh-release` on tag push. The real G4 task is replacing an already-public body, not authoring one into a vacuum |
 | **Retire the predecessor runbook** (this is the oldest defect, and the largest) | [`../runbook_clean-worktree-cut-tag-publish.md`](../runbook_clean-worktree-cut-tag-publish.md) | 284 lines that **self-declare as canonical on line 7** against a **v2.5.0 baseline**, 28 minors stale. `release-plans/README.md` already labels it a predecessor, so two documents claim the same job and this is the one a maintainer reaches for. It carries a full parallel `pm-skills-mcp` release track (33 mentions: `$ROOT_MCP`/`$WT_MCP` variables, worktree setup, an entire numbered section 6, the `validate-mcp-sync` gate, npm publish steps, six verification checkboxes, and section 10.5.5) for a repo frozen since 2026-05-05, plus the wrong freeze version (says v2.9.2, is v2.9.3). **Do not surgically remove the MCP track**: that touches ~90 lines and renumbers sections to preserve a document that should not exist. **Replace the body with a redirect stub** to `site/src/content/docs/contributing/release-runbook.md` (which is current and contains zero MCP references), keeping the path so the historical inbound links from CHANGELOG and old audit docs do not rot. Roughly ten lines, and it retires the MCP track, the version error, the stale baseline, and the false canonical claim at once |
+
+**Two more G4 defects, found 2026-10-15 and fixed the same day in [#302](https://github.com/product-on-purpose/pm-skills/pull/302).** First, the runbook's G4 never named the release-please manifest reconcile. It was done by hand for v2.31.1 and v2.32.0, and v2.33.0 skipped it, which left the shadow Release PR proposing a shipped version for six weeks. It is now G4 item 8. Second, `agents/pm-release-conductor.md` did not know about the delivery check. [#292](https://github.com/product-on-purpose/pm-skills/pull/292) added `check-delivery-pin.mjs` to runbook G4 as a P0, but the conductor's G4 list still named only the install path, so the conductor could have declared an undelivered release complete. The same pull request also writes the deferral sweep into G4 item 7, which is the step whose absence dropped this stub's keystone carry. All three belong to the family this section describes: a procedure that verifies less than the repo now requires. None of them closes [#269](https://github.com/product-on-purpose/pm-skills/issues/269), whose runbook reconciliation is still open.
 
 ## C. Open from the v2.33.0 G4 pass
 
@@ -77,8 +109,9 @@ Full analysis, prioritized gaps, sequencing and falsifiable success criteria: [`
 
 | Item | Carried since | Note |
 |---|---|---|
-| [#279](https://github.com/product-on-purpose/pm-skills/issues/279) **skills-manifest.yaml: restore or retire** | 2026-08-18 | `docs/internal/skill-versioning.md` requires a `skills-manifest.yaml` per release governance folder; measured, 8 of 44 folders have one, most recently v2.15.0. The requirement has gone unobserved for 29 folders. Either restore the practice or retire the requirement |
-| [#267](https://github.com/product-on-purpose/pm-skills/issues/267) | v2.32.0 | Blocks C-6, which is why release-please [#271](https://github.com/product-on-purpose/pm-skills/pull/271) remains shadow-only |
+| [#279](https://github.com/product-on-purpose/pm-skills/issues/279) **skills-manifest.yaml: restore or retire** | 2026-08-18 | **RULED 2026-10-15: retire.** Only 9 of 45 release folders ever carried a manifest, and every version a manifest held is also in that skill's `HISTORY.md`. The nine manifests and their validator are deleted, the two skills without a `HISTORY.md` gain one, and `docs/internal/skill-versioning.md` now points at the `HISTORY.md` Release column instead. Merged 2026-10-15 as [#301](https://github.com/product-on-purpose/pm-skills/pull/301), which closed #279 |
+| **Tag the untagged delta as PATCH v2.33.1?** | 2026-10-15 | Open. `main` carries doc, validator and CI work since v2.33.0, and none of it reaches plugin users until a tag and a registry re-pin. A patch would ship it before this release does. **Evidence 2026-10-15:** every commit on `main` since `v2.33.0` is typed `docs`, `ci` or `chore`, including eleven dependency bumps, and no skill changed version. release-please agrees and proposes nothing. A patch would carry no fix, so the recommendation is to fold the delta into v2.34.0 |
+| [#267](https://github.com/product-on-purpose/pm-skills/issues/267) | v2.32.0 | Blocks C-6, which is why release-please stays shadow-only. The v2.33.0 shadow PR, [#271](https://github.com/product-on-purpose/pm-skills/pull/271), was closed unmerged on 2026-10-15 under the shadow protocol, and the next one opens when a `feat` or `fix` lands |
 | [#268](https://github.com/product-on-purpose/pm-skills/issues/268) | v2.32.0 | |
 
 ---
