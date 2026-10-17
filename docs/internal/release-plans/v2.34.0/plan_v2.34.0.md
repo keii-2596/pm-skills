@@ -1,6 +1,6 @@
 # v2.34.0 Release Plan
 
-**Status:** **RE-SCOPED 2026-10-16 (R1 = A); BUILD COMPLETE 2026-10-16.** Merged: the convention and control-arm record (#309), the runbook reconciliation (#310), the HISTORY.md alignment (#311), the widened checker (#313), the `EXAMPLE.md` sweep (#315) and `deliver-prd` 3.1.0 (#314). The 202-sample library sweep (section A item 6) ran before the cut as ruled (R7), in three staged workflows (R8), applying the convention edge cases R9 to R13. It surfaced two convention questions, ruled 2026-10-17 as R16 and R17 (persona narrative and thread-team attributes stay unmarked). Untagged. The original headline failed its own build gate: on 2026-10-16 neither `measure-ai-eval-spec` nor `deliver-ai-behavior-spec` beat the no-skill control, so neither is built (see "Control-arm result, 2026-10-16" below). The release now carries a `deliver-prd` increment built from what survived the test, plus the `[fictional]` validator and sweep, the HISTORY.md rule alignment and the section B runbook defects. The `[fictional]` convention, section A item 1, was written the same day. Scope was first ruled 2026-10-15, and the stub was seeded 2026-09-01 during the v2.33.0 G4 post-tag hygiene pass.
+**Status:** **SHIPPED 2026-10-17 as v2.34.0.** G1 closed in two Codex rounds under its pre-registered stopping condition (see the G1 section at the end). Delivery to users, through the `agent-plugins` registry re-pin, is recorded at G4. **RE-SCOPED 2026-10-16 (R1 = A); BUILD COMPLETE 2026-10-16.** Merged: the convention and control-arm record (#309), the runbook reconciliation (#310), the HISTORY.md alignment (#311), the widened checker (#313), the `EXAMPLE.md` sweep (#315) and `deliver-prd` 3.1.0 (#314). The 202-sample library sweep (section A item 6) ran before the cut as ruled (R7), in three staged workflows (R8), applying the convention edge cases R9 to R13. It surfaced two convention questions, ruled 2026-10-17 as R16 and R17 (persona narrative and thread-team attributes stay unmarked). The original headline failed its own build gate: on 2026-10-16 neither `measure-ai-eval-spec` nor `deliver-ai-behavior-spec` beat the no-skill control, so neither is built (see "Control-arm result, 2026-10-16" below). The release now carries a `deliver-prd` increment built from what survived the test, plus the `[fictional]` validator and sweep, the HISTORY.md rule alignment and the section B runbook defects. The `[fictional]` convention, section A item 1, was written the same day. Scope was first ruled 2026-10-15, and the stub was seeded 2026-09-01 during the v2.33.0 G4 post-tag hygiene pass.
 **Owner:** Maintainers.
 **Type:** MINOR, additive. The repo's MINOR test in [`../../skill-versioning.md`](../../skill-versioning.md) is "new skill added, or meaningful new shipped capability"; the `deliver-prd` increment is the second, as the skill increments were in v2.33.0.
 **Previous:** v2.33.0 SHIPPED 2026-09-01 (tag `v2.33.0` at `7a42570e`; plan at [`../v2.33.0/plan_v2.33.0.md`](../v2.33.0/plan_v2.33.0.md)).
@@ -200,3 +200,47 @@ The evaluation-sizing block produced zero findings across the nine rounds after 
 **Do not let this cycle inherit twelve rounds as a norm.** A cycle whose fixes delete or mark should converge in the two or three rounds v2.32.0 took. If round counts start climbing again, that is the signal that the fixes have turned from deleting into authoring.
 
 Pre-register the stopping condition before the gate opens, per D23. A quality-shaped rule ("stop when findings fall below severity X") assumes findings converge; when the fix rate equals the damage rate, that rule never fires.
+
+---
+
+## G1 adversarial review: the stopping condition, pre-registered 2026-10-17
+
+This rule is committed before round 1 runs, so the end of the gate cannot be argued as a moved goalpost. It applies the v2.33.0 D23 option A rule from the first round instead of after the eleventh.
+
+- **Instrument of record.** The Codex companion `adversarial-review` runs with base `v2.33.0` and branch scope. Its focus is the user-facing change set: `deliver-prd` 3.1.0, `deliver-acceptance-criteria` 1.1.1, `utility-pm-skill-builder` 1.3.0, `utility-pm-skill-iterate` 1.1.0, the `[fictional]` convention text, the widened samples checker, and the release runbook. Codex returns the findings; Claude transcribes them and never authors one. A run that exits with "Turn failed" or a usage-limit message is an aborted round, not a clean one, and it is re-run rather than counted.
+- **Round 1 reviews the whole branch.** A finding Codex rates critical or high is closed before the tag. It is deferred to v2.35.0 with a written rationale only if closing it means authoring new methodology. A medium or low finding is closed or acknowledged.
+- **Fixes delete or mark.** A fix removes the claim, marks it, or corrects a fact. A fix that would author new structure or methodology is deferred instead, because the v2.33.0 gate measured that authored fixes churn.
+- **Round 2 is the last adversarial round.** If round 1 produces a fix pass, one scoped recheck reviews only the surfaces that the fix pass changed. Whatever it returns, findings on those surfaces are closed by deleting or marking, and findings elsewhere are deferred to v2.35.0 with a rationale. The resulting fix pass is verified by a recorded finding-versus-result table, not by another round, and then the gate is attested.
+- **A clean round 1 ends the gate.** If round 1 returns no material findings and did not abort, the gate is attested after round 1 with no recheck.
+- **Fallback instrument.** If Codex cannot complete a round in this session after one re-run, an independent Claude reviewer runs the same focus, and this record states that the instrument changed.
+
+### Round 1, 2026-10-17: four findings, all closed by correction
+
+Codex completed the round (exit 0, verdict "needs-attention") against the branch at `16e19e3e`. Every finding was closed in one fix pass. Each fix corrects a claim or a classification, and none authors new structure.
+
+| # | Codex severity | Finding | Disposition |
+|---|---|---|---|
+| F1 | high | `deliver-prd` told authors to restate an unbacked rate requirement as a pass rule per case, which silently weakens a release gate | **Closed.** The rate is kept and its verification is marked unresolved until a designed sample exists; pass rules per case are additional evidence. Corrected in the template, `SKILL.md`, both HISTORY.md files and the `deliver-acceptance-criteria` pointer |
+| F2 | medium | AB-4 forbade instructions in any content the model did not author, which includes a style guide the user deliberately supplies | **Closed.** The row now covers content that neither the product's instructions nor the user told the model to obey. Corrected in the template, `SKILL.md` and HISTORY.md |
+| F3 | medium | `utility-pm-skill-builder` added HISTORY.md to the Output Contract's MUST list and called it a minor | **Closed by retype to 2.0.0 major.** The tie-breaker rule says a new required output is major. 1.3.0 never shipped; the HISTORY.md row and section say so, as `deliver-prd` 3.0.0 did for 2.3.0 |
+| F4 | medium | The runbook and the release conductor let a delivery P0 be logged as a known regression, which would close a release that reached nobody | **Closed.** The delivery check now has no waiver: the release stays awaiting delivery until the check exits 0 |
+
+### Round 2, 2026-10-17: the scoped recheck, and the gate attested
+
+Codex reviewed only the fix pass (`16e19e3e` to `2299a3e3`) and completed the round (exit 0). It found no material defect in the F1, F2 or F3 fixes. It returned one finding against F4, an execution-fidelity miss: the fix had qualified two waiver statements and left two others.
+
+| # | Codex severity | Finding | Disposition under the stopping condition |
+|---|---|---|---|
+| R2-F1 | medium | The runbook's recovery list (G4 P0 incident) still allowed any P0 to be logged as a known regression | **Closed** on a fix-pass surface: the line now says a delivery P0 has no second path |
+| R2-F1, remainder | medium | `skills/utility-pm-release-conductor/references/TEMPLATE.md` repeats the unconditional waiver in its incident output | **Deferred to v2.35.0.** The fix pass did not touch this file, so the rule defers it. Editing it changes a shipped skill's output contract, and narrowing when "Release complete" may be emitted may be a MAJOR under the "what done means" row of `docs/internal/skill-versioning.md`, which is a classification decision rather than a delete-or-mark fix. The runbook and `agents/pm-release-conductor.md`, which the conductor sub-agent reads at G4, are both corrected |
+
+**Finding-versus-result verification, run instead of a third round.** Each check is a repository search on the fix-pass result.
+
+| Finding | Check | Result |
+|---|---|---|
+| F1 | The phrases that restated a rate as a pass rule ("restate the criterion as a pass rule", "otherwise state the pass rule", "restated as a pass rule", "how to state a pass rule per case instead") in `skills/`, `agents/` and `site/` | None remain |
+| F2 | "did not author" in `skills/`, `agents/` and `site/` | None remains |
+| F3 | Builder version references | `SKILL.md`, both packet files, `HISTORY.md`, `docs/internal/skill-versioning.md` and `skill-manifest.json` all read 2.0.0; the remaining "1.3.0" strings in the builder's HISTORY.md say that 1.3.0 never shipped |
+| F4 and R2-F1 | Every "known regression" waiver in the runbook, the agent file and the skill | Four of five are qualified for a delivery P0; the fifth is the deferred skill template |
+
+**G1 attested 2026-10-17.** Two rounds ran, as the stopping condition allows at most. Every critical or high finding is closed, every medium finding is closed or deferred with a rationale, and no fix authored new structure.
