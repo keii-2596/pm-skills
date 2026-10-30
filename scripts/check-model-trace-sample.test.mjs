@@ -4,7 +4,8 @@ import { readFileSync } from 'node:fs';
 import { findPlaceholders } from './check-sample-no-placeholders.mjs';
 import { fabricatedMetrics } from './check-sample-no-fabricated-metrics.mjs';
 
-const read = (path) => readFileSync(new URL(`../${path}`, import.meta.url), 'utf8');
+// Normalize CRLF so the section splits below also hold on a Windows checkout with core.autocrlf=true.
+const read = (path) => readFileSync(new URL(`../${path}`, import.meta.url), 'utf8').replace(/\r\n/g, '\n');
 const dir = 'library/skill-output-samples/measure-instrumentation-spec';
 const sample = read(`${dir}/sample_measure-instrumentation-spec_brainshelf_resurface-model-traces.md`);
 const template = read('skills/measure-instrumentation-spec/references/TEMPLATE.md');
